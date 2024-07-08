@@ -61,6 +61,8 @@ function makeRenderer(opts = {}) {
       const rowKeys = pivotData.getRowKeys();
       const colKeys = pivotData.getColKeys();
       const grandTotalAggregator = pivotData.getAggregator([], []);
+      const localeStrings = this.props.localeStrings;
+      const defaultTotals = this.props.defaultTotals;
 
       let valueCellColors = () => {};
       let rowTotalColors = () => {};
@@ -170,7 +172,7 @@ function makeRenderer(opts = {}) {
                         colAttrs.length + (rowAttrs.length === 0 ? 0 : 1)
                       }
                     >
-                      Totals
+                      {localeStrings.totals || 'Totals'}
                     </th>
                   )}
                 </tr>
@@ -187,7 +189,9 @@ function makeRenderer(opts = {}) {
                   );
                 })}
                 <th className="pvtTotalLabel">
-                  {colAttrs.length === 0 ? 'Totals' : null}
+                  {colAttrs.length === 0
+                    ? localeStrings.totals || 'Totals'
+                    : null}
                 </th>
               </tr>
             )}
@@ -257,7 +261,7 @@ function makeRenderer(opts = {}) {
                 className="pvtTotalLabel"
                 colSpan={rowAttrs.length + (colAttrs.length === 0 ? 0 : 1)}
               >
-                Totals
+                {localeStrings.totals || 'Totals'}
               </th>
 
               {colKeys.map(function(colKey, i) {
@@ -284,7 +288,8 @@ function makeRenderer(opts = {}) {
                 }
                 className="pvtGrandTotal"
               >
-                {grandTotalAggregator.format(grandTotalAggregator.value())}
+                {defaultTotals ||
+                  grandTotalAggregator.format(grandTotalAggregator.value())}
               </td>
             </tr>
           </tbody>
